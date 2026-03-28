@@ -9,4 +9,5 @@ public interface JobService {
     List<JobResponseDTO> getAllJobs();
     JobResponseDTO getJobById(String id);
     List<JobResponseDTO> getJobsByPostedBy(String postedBy);
+    void deleteJob(String id);
 }

@@ -8,4 +8,5 @@ public class JobRequestDTO {
     private String description;
     private String budget;
     private String postedBy;
+    private Long userId;
 }

@@ -29,6 +29,11 @@ public class JobController {
     public ResponseEntity<JobResponseDTO> getJobById(@PathVariable String id) {
         return ResponseEntity.ok(jobService.getJobById(id));
     }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteJob(@PathVariable String id) {
+        jobService.deleteJob(id);
+        return ResponseEntity.noContent().build();
+    }
 
     @GetMapping("/user/{postedBy}")
     public ResponseEntity<List<JobResponseDTO>> getJobsByUser(@PathVariable String postedBy) {

@@ -1,5 +1,6 @@
 package com.quickhire.job.service.impl;
 
+import com.quickhire.job.client.UserServiceClient;
 import com.quickhire.job.dto.JobRequestDTO;
 import com.quickhire.job.dto.JobResponseDTO;
 import com.quickhire.job.entity.Job;
@@ -15,17 +16,33 @@ import java.util.stream.Collectors;
 public class JobServiceImpl implements JobService {
 
     private final JobRepository jobRepository;
+    private final UserServiceClient userServiceClient;
 
     @Override
     public JobResponseDTO createJob(JobRequestDTO dto) {
+        // Verify user exists via Feign
+        try {
+            userServiceClient.getUserById(dto.getUserId());
+        } catch (Exception e) {
+            throw new RuntimeException("User not found with id: " + dto.getUserId());
+        }
+
         Job job = new Job();
         job.setTitle(dto.getTitle());
         job.setDescription(dto.getDescription());
         job.setBudget(dto.getBudget());
         job.setPostedBy(dto.getPostedBy());
+        job.setUserId(dto.getUserId());
         job.setStatus("OPEN");
         Job saved = jobRepository.save(job);
         return mapToDTO(saved);
+    }
+
+    @Override
+    public void deleteJob(String id) {
+        jobRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Job not found"));
+        jobRepository.deleteById(id);
     }
 
     @Override

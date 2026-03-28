@@ -9,5 +9,6 @@ public class JobResponseDTO {
     private String description;
     private String budget;
     private String postedBy;
+    private Long userId;
     private String status;
 }
